@@ -20,10 +20,12 @@ class ElectricSearchBase extends Component {
 		const {childrenOnly, excludePath} = this;
 		const path = this.path || location.pathname;
 
-		let {hidden, url} = data;
+		let {hidden, location} = data;
 
-		if ((childrenOnly && url.indexOf(path) !== 0 && url !== path) ||
-			(excludePath && url.indexOf(excludePath) === 0)) {
+		location = location || data.url;
+
+		if ((childrenOnly && location.indexOf(path) !== 0 && location !== path) ||
+			(excludePath && location.indexOf(excludePath) === 0)) {
 
 			return false;
 		}
@@ -98,7 +100,7 @@ class ElectricSearchBase extends Component {
 					return data;
 				}
 				else {
-					return ajax.request('/site.json')
+					return ajax.request(instance.dataURL)
 						then(res)
 				}
 			})
@@ -134,6 +136,10 @@ ElectricSearchBase.STATE = {
 
 	data: {
 		validator: core.isObject
+	},
+
+	dataURL: {
+		value: '/site.json'
 	},
 
 	excludePath: {
